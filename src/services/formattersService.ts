@@ -28,10 +28,10 @@ export class FormattersService extends BaseService {
    */
   private getCommonMeta() {
     return {
-      project: 'Unofficial aana API',
+      project: 'Gaana',
       version: '1.0.0',
-      author: 'notdeltaxd',
-      repository: 'https://github.com/notdeltaxd/Gaana-API',
+      author: 'Ayush Kumaryadav',
+      repository: 'Private',
       license: 'Apache-2.0',
       timestamp: new Date().toISOString()
     }
