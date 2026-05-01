@@ -28,7 +28,7 @@ export class FormattersService extends BaseService {
    */
   private getCommonMeta() {
     return {
-      project: 'Unofficial Gaana API',
+      project: 'Unofficial aana API',
       version: '1.0.0',
       author: 'notdeltaxd',
       repository: 'https://github.com/notdeltaxd/Gaana-API',
