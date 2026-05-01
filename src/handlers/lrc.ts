@@ -34,7 +34,7 @@ export const handleLrc = async (c: Context) => {
     if (!response.ok) {
       return c.json(
         gaanaService.formatResponse({ error: 'Failed to communicate with Gaana API' }),
-        response.status
+        response.status as any // <-- FIX: Added "as any" to bypass strict Hono typing
       )
     }
 
