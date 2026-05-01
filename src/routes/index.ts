@@ -28,6 +28,7 @@ import { handleAlbumList } from '../handlers/albumList.js'
 import { handleLyricsList, handleSongLyrics } from '../handlers/lyrics.js'
 import { handleHealth } from '../handlers/health.js'
 import { handleGetStream } from '../handlers/stream.js'
+import { handleLrc } from '../handlers/lrc.js'
 
 const router = new Hono()
 
