@@ -14,7 +14,7 @@ import { gaanaService } from './services/instances.js'
  * Standard credits information.
  */
 const creditsInfo = {
-  project: 'Unofficial Gaana API',
+  project: 'Unofficial Gaana APayush',
   author: 'notdeltaxd',
   repository: 'https://github.com/notdeltaxd/Gaana-API',
   license: 'Apache-2.0',
