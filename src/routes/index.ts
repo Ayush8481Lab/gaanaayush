@@ -1,4 +1,4 @@
-/**
+ /**
  * @fileoverview Main API router configuration for all endpoints.
  * @module routes/index
  */
