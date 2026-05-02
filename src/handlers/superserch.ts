@@ -16,7 +16,7 @@ export const handleSuperserch = async (c: Context) => {
   try {
     // 2. Reconstruct the URL. 
     // If endpointPath is empty, this perfectly builds "https://apiv2.gaana.com/?query=..."
-    const targetUrl = `https://apiv2.gaana.com/?${endpointPath}${reqUrl.search}`
+    const targetUrl = `https://apiv2.gaana.com/${endpointPath}${reqUrl.search}`
 
     // 3. Fetch from Gaana using our bypass headers
     const response = await fetch(targetUrl, {
