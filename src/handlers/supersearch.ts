@@ -1,5 +1,5 @@
 /**
- * @fileoverview Handler for Gaana Super Search
+ * @fileoverview Handler for Gaana Super Search (App Spoofing)
  * @module handlers/supersearch
  */
 
@@ -22,19 +22,19 @@ export const handleSuperSearch = async (c: Context) => {
     searchUrl.searchParams.append('content_filter', '2')
     searchUrl.searchParams.append('include', include)
     searchUrl.searchParams.append('isRegSrch', '0')
-    searchUrl.searchParams.append('webVersion', 'mix')
-    searchUrl.searchParams.append('rType', 'web')
     searchUrl.searchParams.append('startIndex', startIndex)
     searchUrl.searchParams.append('usrLang', language)
+    
+    // REMOVED: rType=web and webVersion=mix to avoid Web Firewall
 
     const response = await fetch(searchUrl.toString(), {
       method: 'GET',
       headers: {
-        // We use pure Web headers here because rType=web. 
-        // DO NOT use deviceType=GaanaAndroidApp for this specific endpoint.
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en;q=0.9',
+        // SPOOFING AS THE ANDROID APP (Bypasses Vercel Server Blocks)
+        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 10; SM-G975F)', // Real Android User-Agent
+        'deviceType': 'GaanaAndroidApp',
+        'appVersion': 'V5',
+        'Accept': 'application/json',
         'Origin': 'https://gaana.com',
         'Referer': 'https://gaana.com/'
       }
@@ -49,18 +49,16 @@ export const handleSuperSearch = async (c: Context) => {
       }, response.status as any)
     }
 
-    // FIX: Read as text first to prevent the JSON crash
     const responseText = await response.text()
 
     if (!responseText) {
       return c.json({ 
         success: false, 
-        error: 'Gaana returned an empty response (Firewall block).',
+        error: 'Gaana firewall still blocking.',
         url_used: searchUrl.toString()
       }, 502)
     }
 
-    // Now safely parse the text into JSON
     const gaanaData = JSON.parse(responseText)
 
     return c.json({
