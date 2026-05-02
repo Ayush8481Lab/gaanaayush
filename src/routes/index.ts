@@ -1,5 +1,5 @@
- /**
- * @fileoverview Main API router configuration for all endpoints
+/**
+ * @fileoverview Main API router configuration for all endpoints.
  * @module routes/index
  */
 
@@ -20,10 +20,10 @@ import { handleAlbumList } from '../handlers/albumList.js'
 import { handleLyricsList, handleSongLyrics } from '../handlers/lyrics.js'
 import { handleHealth } from '../handlers/health.js'
 import { handleGetStream } from '../handlers/stream.js'
+import { handleLrc } from '../handlers/lrc.js'
 
-// 1. IMPORT YOUR NEW HANDLER HERE
-import { handleLrc } from '../handlers/lrc.js' 
-import { handleSuperSearch } from '../handlers/superserch.js'
+// --- CORRECTED IMPORT (No 'a' in superserch) ---
+import { handleSuperserch } from '../handlers/superserch.js'
 
 const router = new Hono()
 
@@ -39,7 +39,7 @@ router.get('/search/artists', handleSearchArtists)
 // Global search endpoint
 router.get('/search', handleSearch)
 
-// Resource endpoints - Query parameter support
+// Resource endpoints
 router.get('/songs', handleGetSong)
 router.get('/albums', handleGetAlbum)
 router.get('/playlists', handleGetPlaylist)
@@ -63,9 +63,11 @@ router.get('/lyrics/:seokey', handleSongLyrics)
 router.get('/stream', handleGetStream)
 router.get('/stream/:trackId', handleGetStream)
 
-// 2. REGISTER YOUR NEW ROUTE HERE
-// Usage: GET /api/lrc?id=65632806
+// Custom LRC endpoint
 router.get('/lrc', handleLrc)
-router.get('/superserch/*', handleSupersearch)
+
+// --- CORRECTED ROUTE ---
+// Dynamic apiv2 Proxy Route
+router.get('/superserch/*', handleSuperserch)
 
 export default router
