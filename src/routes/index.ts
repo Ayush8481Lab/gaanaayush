@@ -24,7 +24,7 @@ import { handleLrc } from '../handlers/lrc.js'
 
 // --- CORRECTED IMPORT (No 'a' in superserch) ---
 import { handleSuperserch } from '../handlers/superserch.js'
-import { handleSuperserch } from '../handlers/supersearch.js'
+
 
 const router = new Hono()
 
@@ -70,6 +70,6 @@ router.get('/lrc', handleLrc)
 // --- CORRECTED ROUTE ---
 // Dynamic apiv2 Proxy Route
 router.get('/superserch/*', handleSuperserch)
-router.get('/supersearch/*', handleSupersearch)
+
 
 export default router
