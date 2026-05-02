@@ -1,31 +1,24 @@
 /**
- * @fileoverview Dynamic Proxy for apiv2.gaana.com
+ * @fileoverview Dynamic Proxy for apiv2.gaana.com (Supports Root & Subpaths)
  * @module handlers/superserch
  */
 
 import { Context } from 'hono'
 
 export const handleSuperserch = async (c: Context) => {
-  // 1. Get the full requested URL (e.g., http://localhost:3000/api/superserch/home/playlist/top-charts?userlanguage=Bhojpuri)
   const reqUrl = new URL(c.req.url)
 
-  // 2. Extract everything after "/api/superserch/"
-  // This Regex grabs the exact path you want from the apiv2 server
-  const match = reqUrl.pathname.match(/\/api\/superserch\/(.*)/i)
+  // 1. Extract the path after "/api/superserch". 
+  // Using \/? makes the trailing slash optional, so it safely captures root queries too.
+  const match = reqUrl.pathname.match(/\/api\/superserch\/?(.*)/i)
   const endpointPath = match ? match[1] : ''
 
-  if (!endpointPath) {
-    return c.json({ 
-      success: false, 
-      error: 'Missing endpoint path after /api/superserch/' 
-    }, 400)
-  }
-
   try {
-    // 3. Reconstruct the URL using the apiv2 domain + your extracted path + all your query params
+    // 2. Reconstruct the URL. 
+    // If endpointPath is empty, this perfectly builds "https://apiv2.gaana.com/?query=..."
     const targetUrl = `https://apiv2.gaana.com/${endpointPath}${reqUrl.search}`
 
-    // 4. Fetch from Gaana using the PROVEN working headers from your lyrics endpoint
+    // 3. Fetch from Gaana using our bypass headers
     const response = await fetch(targetUrl, {
       method: 'GET',
       headers: {
@@ -50,10 +43,10 @@ export const handleSuperserch = async (c: Context) => {
 
     const gaanaData = await response.json()
 
-    // 5. Return the clean JSON data!
+    // 4. Return clean data
     return c.json({
       success: true,
-      source_url: targetUrl, // Shows you exactly what it requested for debugging
+      source_url: targetUrl, 
       data: gaanaData
     })
 
