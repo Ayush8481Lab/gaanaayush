@@ -1,5 +1,5 @@
  /**
- * @fileoverview Main API router configuration for all endpoints.
+ * @fileoverview Main API router configuration for all endpoints
  * @module routes/index
  */
 
