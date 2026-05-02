@@ -70,6 +70,6 @@ router.get('/lrc', handleLrc)
 // --- CORRECTED ROUTE ---
 // Dynamic apiv2 Proxy Route
 router.get('/superserch/*', handleSuperserch)
-router.get('/superserch/*', handleSupersearch)
+router.get('/supersearch/*', handleSupersearch)
 
 export default router
