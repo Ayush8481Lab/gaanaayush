@@ -23,7 +23,7 @@ import { handleGetStream } from '../handlers/stream.js'
 
 // 1. IMPORT YOUR NEW HANDLER HERE
 import { handleLrc } from '../handlers/lrc.js' 
-import { handleSuperSearch } from '../handlers/supersearch.js'
+import { handleSuperSearch } from '../handlers/superserch.js'
 
 const router = new Hono()
 
@@ -66,6 +66,6 @@ router.get('/stream/:trackId', handleGetStream)
 // 2. REGISTER YOUR NEW ROUTE HERE
 // Usage: GET /api/lrc?id=65632806
 router.get('/lrc', handleLrc)
-router.get('/supersearch/*', handleSupersearch)
+router.get('/superserch/*', handleSupersearch)
 
 export default router
