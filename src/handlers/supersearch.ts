@@ -1,5 +1,5 @@
 /**
- * @fileoverview Handler for Gaana Super Search (App Spoofing)
+ * @fileoverview Handler for Gaana Super Search (Ultimate Firewall Bypass)
  * @module handlers/supersearch
  */
 
@@ -25,18 +25,29 @@ export const handleSuperSearch = async (c: Context) => {
     searchUrl.searchParams.append('startIndex', startIndex)
     searchUrl.searchParams.append('usrLang', language)
     
-    // REMOVED: rType=web and webVersion=mix to avoid Web Firewall
+    // Generate a random Indian IP address to hide the Vercel Data Center IP
+    const fakeIp = `103.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`
 
     const response = await fetch(searchUrl.toString(), {
       method: 'GET',
       headers: {
-        // SPOOFING AS THE ANDROID APP (Bypasses Vercel Server Blocks)
-        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 10; SM-G975F)', // Real Android User-Agent
+        // 1. Use the exact networking library the Android App uses
+        'User-Agent': 'okhttp/4.9.2',
+        
+        // 2. Official App Credentials
         'deviceType': 'GaanaAndroidApp',
-        'appVersion': 'V5',
+        'appVersion': 'V9',
+        
+        // 3. Accepted data types
         'Accept': 'application/json',
-        'Origin': 'https://gaana.com',
-        'Referer': 'https://gaana.com/'
+        'Accept-Encoding': 'gzip, deflate',
+
+        // 4. IP Spoofing (Crucial for Vercel)
+        'X-Forwarded-For': fakeIp,
+        'X-Real-IP': fakeIp
+        
+        // NOTICE: No 'Origin' or 'Referer' headers are here! 
+        // Adding them will cause the firewall to block us again.
       }
     })
 
@@ -51,10 +62,10 @@ export const handleSuperSearch = async (c: Context) => {
 
     const responseText = await response.text()
 
-    if (!responseText) {
+    if (!responseText || responseText.trim() === '') {
       return c.json({ 
         success: false, 
-        error: 'Gaana firewall still blocking.',
+        error: 'Gaana firewall still blocking (Empty Response).',
         url_used: searchUrl.toString()
       }, 502)
     }
