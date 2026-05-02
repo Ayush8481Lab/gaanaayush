@@ -23,7 +23,7 @@ export const handleSuperserch = async (c: Context) => {
 
   try {
     // 3. Reconstruct the URL using the apiv2 domain + your extracted path + all your query params
-    const targetUrl = `https://apiv2.gaana.com/${endpointPath}${reqUrl.search}`
+    const targetUrl = `https://api.gaana.com/${endpointPath}${reqUrl.search}`
 
     // 4. Fetch from Gaana using the PROVEN working headers from your lyrics endpoint
     const response = await fetch(targetUrl, {
