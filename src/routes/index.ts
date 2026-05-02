@@ -66,10 +66,6 @@ router.get('/stream/:trackId', handleGetStream)
 // 2. REGISTER YOUR NEW ROUTE HERE
 // Usage: GET /api/lrc?id=65632806
 router.get('/lrc', handleLrc)
-// Usage: GET /api/supersearch?q=Hello&language=Hindi,Bhojpuri&include=track&startIndex=0
-router.get('/supersearch', handleSuperSearch)
-
-// (Optional) Mapping your exact spelling "superserch" just in case you hardcoded it somewhere:
-router.get('/superserch', handleSuperSearch)
+router.get('/supersearch/*', handleSupersearch)
 
 export default router
