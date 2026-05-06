@@ -13,7 +13,7 @@
 export const apiEndpoints = {
   trendingUrl: 'https://gaana.com/apiv2?type=miscTrendingSongs',
   albumListUrl: 'https://gaana.com/apiv2?type=albumList',
-  searchSongsUrl: 'https://gaana.com/apiv2?country=IN&page=0&secType=track&type=search&limit=10,10&keyword=',
+  searchSongsUrl: 'https://gaana.com/?country=IN&page=0&secType=track&type=search&keyword=',
   songDetailsUrl: 'https://gaana.com/apiv2?type=songDetail&seokey=',
   similarArtistsUrl: 'https://apiv2.gaana.com/player/similar-artists/',
   playlistDetailsUrl: 'https://gaana.com/apiv2?type=playlistDetail&seokey=',
