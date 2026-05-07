@@ -1,25 +1,28 @@
-import { Context } from 'hono'
+/**
+ * @fileoverview Dynamic Proxy for apiv2.gaana.com (Supports Root & Subpaths)
+ * @module handlers/superserch
+ */
 
-// Function to generate a random Indian IP address to spoof the WAF
-const getRandomIndianIp = () => {
-  const prefixes =['14.96.', '27.54.', '43.224.', '49.14.', '103.27.']
-  const prefix = prefixes[Math.floor(Math.random() * prefixes.length)]
-  return `${prefix}${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`
-}
+import { Context } from 'hono'
 
 export const handleSuperserch = async (c: Context) => {
   const reqUrl = new URL(c.req.url)
+
+  // 1. Extract the path after "/api/superserch". 
+  // Using \/? makes the trailing slash optional, so it safely captures root queries too.
   const match = reqUrl.pathname.match(/\/api\/superserch\/?(.*)/i)
   const endpointPath = match ? match[1] : ''
 
   try {
-    const targetUrl = `https://gaana.com/apiv2?country=IN&page=0&secType=track&type=search&keyword=${endpointPath}${reqUrl.search}`
-    const spoofedIp = getRandomIndianIp()
+    // 2. Reconstruct the URL. 
+    // If endpointPath is empty, this perfectly builds "https://apiv2.gaana.com/?query=..."
+    const targetUrl = `https://gaana.com/${endpointPath}${reqUrl.search}`
 
+    // 3. Fetch from Gaana using our bypass headers
     const response = await fetch(targetUrl, {
       method: 'GET',
       headers: {
-    'User-Agent': 'Mozilla/5.0 (Linux; Android 13; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36',
+     'User-Agent': 'Mozilla/5.0 (Linux; Android 13; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36',
     Accept: 'application/json, text/plain, */*',
     'Accept-Language': 'en-US,en;q=0.9',
     'Accept-Encoding': 'gzip, deflate, br',
@@ -32,22 +35,31 @@ export const handleSuperserch = async (c: Context) => {
       }
     })
 
-    const rawText = await response.text()
-
     if (!response.ok) {
-      return c.json({ success: false, error: `Blocked: ${response.status}`, details: rawText }, response.status as any)
+      const errText = await response.text()
+      return c.json({ 
+        success: false, 
+        error: `Gaana blocked request: ${response.status}`,
+        details: errText,
+        url_attempted: targetUrl
+      }, response.status as any)
     }
 
-    if (!rawText || rawText.trim() === '') {
-      return c.json({ success: false, error: 'Empty response (Still blocked by Gaana WAF)' }, 500)
-    }
+    const gaanaData = await response.json()
 
+    // 4. Return clean data
     return c.json({
       success: true,
-      data: JSON.parse(rawText)
+      source_url: targetUrl, 
+      data: gaanaData
     })
 
   } catch (error: any) {
-    return c.json({ success: false, error: 'Internal Server Error', message: error.message }, 500)
+    console.error("Dynamic API Error:", error)
+    return c.json({ 
+      success: false, 
+      error: 'Internal Server Error',
+      message: error.message || String(error)
+    }, 500)
   }
 }
