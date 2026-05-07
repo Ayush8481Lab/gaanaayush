@@ -19,16 +19,16 @@ export const handleSuperserch = async (c: Context) => {
     const response = await fetch(targetUrl, {
       method: 'GET',
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Accept': 'application/json, text/plain, */*',
-        'Accept-Language': 'en-US,en-IN;q=0.9,en;q=0.8',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Origin': 'https://gaana.com',
-        'Referer': 'https://gaana.com/',
-        'X-Forwarded-For': spoofedIp,
-        'X-Real-IP': spoofedIp,
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    Accept: 'application/json, text/plain, */*',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    Origin: 'https://gaana.com',
+    Referer: 'https://gaana.com/',
+    Connection: 'keep-alive',
+    'Sec-Fetch-Dest': 'empty',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Site': 'same-origin'
       }
     })
 
