@@ -9,7 +9,7 @@ export const albumListSupportedLanguages = [
   'punjabi',
   'telugu',
   'tamil',
-  'bhojpuri',
+  'Bhojpuri',
   'bengali',
   'malayalam',
   'kannada',
