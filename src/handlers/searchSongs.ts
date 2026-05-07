@@ -15,10 +15,10 @@ export async function handleSearchSongs(c: Context) {
     return c.json({ error: queryValidation.error }, queryValidation.status)
   }
 
-  // Get dynamic limit as string (defaults to "0,10")
+  // Get dynamic limit as string (defaults to "0,10" if not provided)
   const limitParam = c.req.query('limit') || '0,10'
   
-  // Security check: Make sure limit format is either "40" or "10,40"
+  // Security check: Make sure limit format is either a number "40" or "offset,count" like "10,40"
   if (!/^\d+(,\d+)?$/.test(limitParam)) {
     return c.json({ error: "Invalid limit format. Use number or 'offset,count' (e.g., 10,40)" }, 400)
   }
