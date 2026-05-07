@@ -26,16 +26,23 @@ export class SearchService extends BaseService {
   /**
    * Search for songs - fetches individual song details for better data
    */
-  async searchSongs(q: string, limit: number): Promise<unknown[]> {
-    const url = `${apiEndpoints.searchSongsUrl}${encodeURIComponent(q)}`
+  async searchSongs(q: string, limit: number, page: number = 0, language?: string): Promise<unknown[]> {
+    // Build the dynamic URL with page number
+    let url = `${apiEndpoints.searchSongsUrl}${encodeURIComponent(q)}&page=${page}`
+    
+    // Append language if provided by the user
+    if (language) {
+      url += `&language=${encodeURIComponent(language)}`
+    }
+
     const result = await this.fetchJson(url)
-    if (!result || typeof result !== 'object') return []
+    if (!result || typeof result !== 'object') return[]
     const r = result as { gr?: Array<{ gd?: Array<{ seo: string }> }> }
     const gr = r.gr ?? []
     if (!gr.length || !gr[0].gd) return []
 
     // Extract track seokeys from search results
-    const trackSeokeys: string[] = []
+    const trackSeokeys: string[] =[]
     for (let i = 0; i < Math.min(limit, gr[0].gd.length); i++) {
       const track = gr[0].gd[i]
       if (track.seo) {
@@ -43,7 +50,7 @@ export class SearchService extends BaseService {
       }
     }
 
-    if (trackSeokeys.length === 0) return []
+    if (trackSeokeys.length === 0) return[]
 
     // Fetch all song details in parallel for maximum speed
     const songPromises = trackSeokeys.map(async (seokey) => {
@@ -65,7 +72,7 @@ export class SearchService extends BaseService {
     const songResults = await Promise.allSettled(songPromises)
 
     // Filter out failed/null results
-    const songs: unknown[] = []
+    const songs: unknown[] =[]
     for (const result of songResults) {
       if (result.status === 'fulfilled' && result.value !== null) {
         songs.push(result.value)
@@ -81,13 +88,13 @@ export class SearchService extends BaseService {
   async searchAlbums(q: string, limit: number): Promise<unknown[]> {
     const url = `${apiEndpoints.searchAlbumsUrl}${encodeURIComponent(q)}`
     const result = await this.fetchJson(url)
-    if (!result || typeof result !== 'object') return []
+    if (!result || typeof result !== 'object') return[]
     const r = result as { gr?: Array<{ gd?: Array<{ seo: string }> }> }
-    const gr = r.gr ?? []
-    if (!gr.length || !gr[0].gd) return []
+    const gr = r.gr ??[]
+    if (!gr.length || !gr[0].gd) return[]
 
     // Extract album seokeys from search results
-    const albumSeokeys: string[] = []
+    const albumSeokeys: string[] =[]
     for (let i = 0; i < Math.min(limit, gr[0].gd.length); i++) {
       const album = gr[0].gd[i]
       if (album.seo) {
@@ -95,7 +102,7 @@ export class SearchService extends BaseService {
       }
     }
 
-    if (albumSeokeys.length === 0) return []
+    if (albumSeokeys.length === 0) return[]
 
     // Fetch all album details in parallel for maximum speed
     const albumPromises = albumSeokeys.map(async (seokey) => {
@@ -113,7 +120,7 @@ export class SearchService extends BaseService {
     const albumResults = await Promise.allSettled(albumPromises)
 
     // Filter out failed/null results
-    const albums: unknown[] = []
+    const albums: unknown[] =[]
     for (const result of albumResults) {
       if (result.status === 'fulfilled' && result.value !== null) {
         albums.push(result.value)
@@ -138,9 +145,9 @@ export class SearchService extends BaseService {
   async searchArtists(q: string, limit: number): Promise<unknown[]> {
     const url = `${apiEndpoints.searchArtistsUrl}${encodeURIComponent(q)}`
     const result = await this.fetchJson(url)
-    if (!result || typeof result !== 'object') return []
+    if (!result || typeof result !== 'object') return[]
     const r = result as { gr?: Array<{ gd?: Array<any> }> }
-    const gr = r.gr ?? []
+    const gr = r.gr ??[]
     if (!gr.length || !gr[0].gd) return []
     const artists: unknown[] = []
     for (let i = 0; i < Math.min(limit, gr[0].gd.length); i++) {
