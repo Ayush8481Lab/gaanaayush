@@ -31,8 +31,8 @@ export const gaanaService = {
   // Utility for wrapping responses
   formatResponse: (data: any, extraMeta?: any) => formatters.wrapResponse(data, extraMeta),
 
-  // Search operations
-  searchSongs: (q: string, limit: string, language?: string) => searchService.searchSongs(q, limit, language),
+  // Search operations (Updated to accept string | number for limit)
+  searchSongs: (q: string, limit: string | number, language?: string) => searchService.searchSongs(q, limit, language),
   searchAlbums: (q: string, limit: number) => searchService.searchAlbums(q, limit),
   searchPlaylists: (q: string, limit: number) => searchService.searchPlaylists(q, limit),
   searchArtists: (q: string, limit: number) => searchService.searchArtists(q, limit),
