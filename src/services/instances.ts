@@ -32,7 +32,7 @@ export const gaanaService = {
   formatResponse: (data: any, extraMeta?: any) => formatters.wrapResponse(data, extraMeta),
 
   // Search operations
-  searchSongs: (q: string, limit: number) => searchService.searchSongs(q, limit),
+searchSongs: (q: string, limit: number, page?: number, language?: string) => searchService.searchSongs(q, limit, page, language),
   searchAlbums: (q: string, limit: number) => searchService.searchAlbums(q, limit),
   searchPlaylists: (q: string, limit: number) => searchService.searchPlaylists(q, limit),
   searchArtists: (q: string, limit: number) => searchService.searchArtists(q, limit),
