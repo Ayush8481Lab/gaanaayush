@@ -13,7 +13,7 @@ export const handleSuperserch = async (c: Context) => {
   const endpointPath = match ? match[1] : ''
 
   try {
-    const targetUrl = `https://gsearch.gaana.com/${endpointPath}${reqUrl.search}`
+    const targetUrl = `https://gaana.com/apiv2?country=IN&page=0&secType=track&type=search&keyword=${endpointPath}${reqUrl.search}`
     const spoofedIp = getRandomIndianIp()
 
     const response = await fetch(targetUrl, {
