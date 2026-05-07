@@ -1,4 +1,4 @@
-/**
+ /**
  * @fileoverview Handler for song search endpoint.
  * Searches for songs matching the query string.
  * @module handlers/searchSongs
