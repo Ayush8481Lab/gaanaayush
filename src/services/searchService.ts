@@ -26,11 +26,14 @@ export class SearchService extends BaseService {
   /**
    * Search for songs - fetches individual song details for better data
    */
-  async searchSongs(q: string, limit: number, page: number = 0, language?: string): Promise<unknown[]> {
-    // Build the dynamic URL with page number
-    let url = `${apiEndpoints.searchSongsUrl}${encodeURIComponent(q)}&page=${page}`
+  async searchSongs(q: string, limit: string | number, language?: string): Promise<unknown[]> {
+    // Convert limit to string to safely handle both "10,40" and 10
+    const limitStr = limit.toString()
+
+    // 1. Build URL passing the exact limit string
+    let url = `${apiEndpoints.searchSongsUrl}${encodeURIComponent(q)}&limit=${limitStr}`
     
-    // Append language if provided by the user
+    // 2. Append language if provided
     if (language) {
       url += `&language=${encodeURIComponent(language)}`
     }
@@ -38,12 +41,16 @@ export class SearchService extends BaseService {
     const result = await this.fetchJson(url)
     if (!result || typeof result !== 'object') return[]
     const r = result as { gr?: Array<{ gd?: Array<{ seo: string }> }> }
-    const gr = r.gr ?? []
-    if (!gr.length || !gr[0].gd) return []
+    const gr = r.gr ??[]
+    if (!gr.length || !gr[0].gd) return[]
+
+    // 3. Extract the 'count' portion from limit (if limit is "10,40", count is 40)
+    const countStr = limitStr.includes(',') ? limitStr.split(',')[1] : limitStr
+    const count = parseInt(countStr, 10) || 10
 
     // Extract track seokeys from search results
     const trackSeokeys: string[] =[]
-    for (let i = 0; i < Math.min(limit, gr[0].gd.length); i++) {
+    for (let i = 0; i < Math.min(count, gr[0].gd.length); i++) {
       const track = gr[0].gd[i]
       if (track.seo) {
         trackSeokeys.push(track.seo)
@@ -73,9 +80,9 @@ export class SearchService extends BaseService {
 
     // Filter out failed/null results
     const songs: unknown[] =[]
-    for (const result of songResults) {
-      if (result.status === 'fulfilled' && result.value !== null) {
-        songs.push(result.value)
+    for (const songResult of songResults) {
+      if (songResult.status === 'fulfilled' && songResult.value !== null) {
+        songs.push(songResult.value)
       }
     }
 
@@ -90,7 +97,7 @@ export class SearchService extends BaseService {
     const result = await this.fetchJson(url)
     if (!result || typeof result !== 'object') return[]
     const r = result as { gr?: Array<{ gd?: Array<{ seo: string }> }> }
-    const gr = r.gr ??[]
+    const gr = r.gr ?? []
     if (!gr.length || !gr[0].gd) return[]
 
     // Extract album seokeys from search results
@@ -121,9 +128,9 @@ export class SearchService extends BaseService {
 
     // Filter out failed/null results
     const albums: unknown[] =[]
-    for (const result of albumResults) {
-      if (result.status === 'fulfilled' && result.value !== null) {
-        albums.push(result.value)
+    for (const albumResult of albumResults) {
+      if (albumResult.status === 'fulfilled' && albumResult.value !== null) {
+        albums.push(albumResult.value)
       }
     }
 
@@ -149,7 +156,7 @@ export class SearchService extends BaseService {
     const r = result as { gr?: Array<{ gd?: Array<any> }> }
     const gr = r.gr ??[]
     if (!gr.length || !gr[0].gd) return []
-    const artists: unknown[] = []
+    const artists: unknown[] =[]
     for (let i = 0; i < Math.min(limit, gr[0].gd.length); i++) {
       const artist = gr[0].gd[i]
       artists.push({
