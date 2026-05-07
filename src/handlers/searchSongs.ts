@@ -16,7 +16,7 @@ import { validateQueryParam, validateQueryNumber, validationSchemas } from '../u
  *
  * @example
  * ```typescript
- * GET /api/search/songs?q=despacito&limit=10
+ * GET /api/search/songs?q=new&limit=40&language=Hindi&page=1
  * ```
  */
 export async function handleSearchSongs(c: Context) {
@@ -37,8 +37,36 @@ export async function handleSearchSongs(c: Context) {
     return c.json({ error: limitValidation.error }, limitValidation.status)
   }
 
+  // Validate page (defaults to 0 if not provided)
+  const pageValidation = validateQueryNumber(
+    c, 
+    'page', 
+    validationSchemas.page, 
+    0
+  )
+  if (!pageValidation.success) {
+    return c.json({ error: pageValidation.error }, pageValidation.status)
+  }
+
+  // Validate language (optional parameter)
+  const languageValidation = validateQueryParam(
+    c, 
+    'language', 
+    validationSchemas.language, 
+    false
+  )
+  if (!languageValidation.success) {
+    return c.json({ error: languageValidation.error }, languageValidation.status)
+  }
+
   try {
-    const songs = await gaanaService.searchSongs(queryValidation.data, limitValidation.data)
+    // Pass query, limit, page, and language to the service
+    const songs = await gaanaService.searchSongs(
+      queryValidation.data, 
+      limitValidation.data,
+      pageValidation.data,
+      languageValidation.data
+    )
 
     return c.json(gaanaService.formatResponse(songs, { count: songs.length }))
   } catch (err) {
