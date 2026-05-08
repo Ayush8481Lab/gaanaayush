@@ -27,7 +27,7 @@ export const handleSuperserch = async (c: Context) => {
         'appVersion': 'V5',
         'Accept': 'application/json, text/plain, */*',
         'Origin': 'https://gaana.com',
-        'Referer': 'https://gaana.com/'
+        'Referer': 'https://gaana.com/',
         'deviceId': 'cdae45b3-9342-4430-9c24-2d231267a923'
       }
     })
