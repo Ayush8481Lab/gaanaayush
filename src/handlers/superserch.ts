@@ -16,7 +16,7 @@ export const handleSuperserch = async (c: Context) => {
   try {
     // 2. Reconstruct the URL. 
     // If endpointPath is empty, this perfectly builds "https://apiv2.gaana.com/?query=..."
-    const targetUrl = `https://apiv2.gaana.com/${endpointPath}${reqUrl.search}`
+    const targetUrl = `https://gsearch.gaana.com/${endpointPath}${reqUrl.search}`
 
     // 3. Fetch from Gaana using our bypass headers
     const response = await fetch(targetUrl, {
@@ -28,6 +28,7 @@ export const handleSuperserch = async (c: Context) => {
         'Accept': 'application/json, text/plain, */*',
         'Origin': 'https://gaana.com',
         'Referer': 'https://gaana.com/'
+        'deviceId': 'cdae45b3-9342-4430-9c24-2d231267a923'
       }
     })
 
