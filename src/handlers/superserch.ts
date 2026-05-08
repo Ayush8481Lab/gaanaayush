@@ -22,13 +22,16 @@ export const handleSuperserch = async (c: Context) => {
     const response = await fetch(targetUrl, {
       method: 'GET',
       headers: {
-  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-  "Accept": "application/json, text/plain, */*",
-  "Accept-Language": "en-US,en;q=0.9",
-  "Origin": "https://gaana.com",
-  "Referer": "https://gaana.com/",
-  "deviceId": "d04f67c2-3cd0-4a3e-97ea-02259f354ebf",
-  "deviceType": "GaanaWebsiteApp"
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+        "referer": "https://gaana.com/search/songs/hellllll",
+        "accept": "text/css,*/*;q=0.1",
+        "accept-encoding": "gzip, deflate, br, zstd",
+        "connection": "keep-alive",
+        "cookie": "deviceId=4aa04b60-4bb4-4903-9bc0-7db7dc91c41a; deviceType=GaanaWebsiteApp; __ul=Hindi%2CEnglish",
+        "host": "gaana.com",
+        "sec-fetch-dest": "style",
+        "sec-fetch-mode": "no-cors",
+        "sec-fetch-site": "same-origin"
       }
     })
 
