@@ -20,7 +20,7 @@ export const handleSuperserch = async (c: Context) => {
 
     // 3. Fetch from Gaana using our bypass headers
     const response = await fetch(targetUrl, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'deviceType': 'GaanaAndroidApp',
