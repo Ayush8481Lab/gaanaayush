@@ -6,9 +6,9 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/notdeltaxd/Gaana-API.git"
+    "url": "https://github.com"
   },
-  "homepage": "https://github.com/notdeltaxd/Gaana-API",
+  "homepage": "https://github.com",
   "keywords": [
     "gaana",
     "api",
@@ -24,11 +24,14 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "build": "tsc",
+    "build:cloudflare": "bun build ./src/index.ts --outfile=dist/cloudflare-worker.js --target=browser",
     "start": "bun run dist/index.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "tsc --noEmit",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "deploy:vercel": "vercel deploy --prod",
+    "deploy:cloudflare": "bun run build:cloudflare && wrangler deploy"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.6",
