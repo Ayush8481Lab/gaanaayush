@@ -16,7 +16,7 @@ import { gaanaService } from './services/instances.js'
 const creditsInfo = {
   project: 'Unofficial Gaana APayush',
   author: 'notdeltaxd',
-  repository: 'https://github.com/notdeltaxd/Gaana-API',
+  repository: 'https://github.com',
   license: 'Apache-2.0',
   notice: 'Please retain attribution when using this project.'
 }
@@ -111,15 +111,18 @@ app.notFound((ctx) => {
   return ctx.json(
     gaanaService.formatResponse({
       error: 'Not found - check API documentation',
-      documentation: 'https://github.com/notdeltaxd/Gaana-API',
+      documentation: 'https://github.com',
       example: 'GET /api/search?q=despacito'
     }),
     404
   )
 })
 
-// Show banner on startup
-if (process.env.VERCEL || (import.meta as any).main) {
+// Safe cross-platform check for environment/banner execution
+const isVercelEnvironment = typeof process !== 'undefined' && process.env?.VERCEL;
+const isMainModuleExecution = typeof import.meta !== 'undefined' && (import.meta as any).main;
+
+if (isVercelEnvironment || isMainModuleExecution) {
   showBanner()
 }
 
