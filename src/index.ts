@@ -101,11 +101,7 @@ app.get('/', (c) => {
  */
 app.get('/credits', (c) => c.json(gaanaService.formatResponse(creditsInfo)))
 
-// Mount API app at /api
-app.route('/api', appRoute => {
-  appRoute.route('', apiApp)
-})
-
+// Mount API app cleanly at /api
 app.route('/api', apiApp)
 
 /**
