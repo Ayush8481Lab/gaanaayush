@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gaanaayush",
+  "main": "dist/index.js", // Targets the bundled file
+  "compatibility_date": "2026-06-25",
+  "observability": {
+    "enabled": true
+  }
+}
