@@ -1,6 +1,6 @@
 /**
  * @fileoverview Server entry point for Vercel serverless and local development.
- * Handles both Vercel serverless deployment and local development server setup.
+ * Handles both Vercel serverless deployment and local server setup.
  * @module api/index
  */
 
